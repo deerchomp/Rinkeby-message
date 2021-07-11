@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Deploy a Remix Contract</title>
+    <title>Rinkeby Message</title>
 
     <link rel="stylesheet" type="text/css" href="main.css">
 
@@ -37,6 +37,7 @@
 
         // Set the contract address
         const contractAddress = '0x400778092E4C6cF724D98aF4Ea7a8bF92DC5d22E';
+        
         // Set the ABI
         const abi = [
         {
@@ -76,10 +77,7 @@
             web3.eth.defaultAccount = accounts[0];
         });
         
-
-        // Get the contract address
         var myMessage = new web3.eth.Contract(abi, contractAddress);
-
         $("#setMessageButton").click(function () {
             message = $("#userInput").val();
             myMessage.methods.setMessage(message).send({ from : web3.eth.defaultAccount });
