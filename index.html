@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Deploy a Remix Contract</title>
+
+    <link rel="stylesheet" type="text/css" href="main.css">
+
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <h1>Rinkeby Secret Messenger</h1>
+        <hr>
+
+        <label for="message">Write a message to the Rinkeby blockchain!</label>
+        <input id="userInput" type="text">
+
+        <button id="setMessageButton">Set secret message</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+    <script>
+
+        // Connect a the web3 provider
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        }
+        else {
+            web3 = new Web3(new Web3.providers.HttpProvider("place your infura endpoint here"));
+        }
+
+        // Set the contract address
+        const contractAddress = '0x400778092E4C6cF724D98aF4Ea7a8bF92DC5d22E';
+        // Set the ABI
+        const abi = [
+        {
+            "constant": false,
+            "inputs": [
+                {
+                    "name": "x",
+                    "type": "string"
+                }
+            ],
+            "name": "setMessage",
+            "outputs": [],
+            "payable": false,
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "constant": true,
+            "inputs": [],
+            "name": "getMessage",
+            "outputs": [
+                {
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "payable": false,
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ]
+        
+        // Set a default account
+        web3.eth.getAccounts().then(acc => 
+        {
+            accounts = acc;
+            web3.eth.defaultAccount = accounts[0];
+        });
+        
+
+        // Get the contract address
+        var myMessage = new web3.eth.Contract(abi, contractAddress);
+
+        $("#setMessageButton").click(function () {
+            message = $("#userInput").val();
+            myMessage.methods.setMessage(message).send({ from : web3.eth.defaultAccount });
+            console.log($("#userInput").val())
+        });
+
+    </script>
+</body>
+
+</html>
